@@ -1,5 +1,6 @@
 from db import timestamp_records_in_database, Reading, add_reading, get_reading
 from server.api.add_data.validator import Validator
+from server.api.utils import Metrics
 
 
 def add_data_service(plaintext_data: str) -> tuple[dict, int]:
@@ -11,8 +12,8 @@ def add_data_service(plaintext_data: str) -> tuple[dict, int]:
             raw_record = {'timestamp': timestamp, 'metric_name': metric_name, 'metric_value': metric_value}
             validated_record = Validator(**raw_record)
 
-            voltage = float(validated_record.metric_value) if validated_record.metric_name == 'Voltage' else None
-            current = float(validated_record.metric_value) if validated_record.metric_name == 'Current' else None
+            voltage = float(validated_record.metric_value) if validated_record.metric_name == Metrics.VOLTAGE.value else None
+            current = float(validated_record.metric_value) if validated_record.metric_name == Metrics.CURRENT.value else None
             metric_timestamp = int(validated_record.timestamp)
 
             if metric_timestamp not in timestamp_records_in_database:

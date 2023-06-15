@@ -1,4 +1,5 @@
 from pydantic import BaseModel, validator
+from server.api.utils import Metrics
 
 
 class Validator(BaseModel):
@@ -14,7 +15,7 @@ class Validator(BaseModel):
 
     @validator('metric_name')
     def validate_metric_name(cls, value):
-        if value not in ('Voltage', 'Current'):
+        if value not in (Metrics.VOLTAGE.value, Metrics.CURRENT.value):
             raise ValueError("Invalid metric name.")
         return value
 
